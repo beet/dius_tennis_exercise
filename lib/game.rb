@@ -39,7 +39,7 @@ private
   end
 
   def double_point_difference?
-    points_difference_abs == 2
+    points_difference_abs >= 2
   end
 
   def player_points

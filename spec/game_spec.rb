@@ -77,5 +77,17 @@ describe Game do
         end
       end
     end
+
+    context "when there is more than a 2 point difference between players" do
+      before do
+        4.times do
+          game.point_won_by(player_1_name)
+        end
+      end
+
+      it 'correctly identifies the winning player' do
+        expect(game.score).to eq("Game #{player_1_name}")
+      end
+    end
   end
 end
