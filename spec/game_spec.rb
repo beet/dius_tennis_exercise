@@ -90,4 +90,57 @@ describe Game do
       end
     end
   end
+
+  context "active?" do
+    before do
+      allow(game).to receive(:has_winner?).and_return(has_winner)
+    end
+
+    context "when the game has a winner" do
+      let(:has_winner) { true }
+
+      it 'is false' do
+        expect(game).to_not be_active
+      end
+    end
+
+    context "when the game does not have a winner" do
+      let(:has_winner) { false }
+
+      it 'is true' do
+        expect(game).to be_active
+      end
+    end
+  end
+
+  context "won_by?" do
+    before do
+      allow(game).to receive(:has_winner?).and_return(has_winner)
+      allow(game).to receive(:leading_player_name).and_return(player_1_name)
+    end
+
+    context "when the game has a winner" do
+      let(:has_winner) { true }
+
+      context "when given the leaging player's name" do
+        it 'is true' do
+          expect(game.won_by?(player_1_name)).to be_truthy
+        end
+      end
+
+      context "when not given the leading player's name" do
+        it 'is false' do
+          expect(game.won_by?(player_2_name)).to be_falsey
+        end
+      end
+    end
+
+    context "when the game does not have a winner" do
+      let(:has_winner) { false }
+
+      it 'is false' do
+        expect(game.won_by?(player_1_name)).to be_falsey
+      end
+    end
+  end
 end

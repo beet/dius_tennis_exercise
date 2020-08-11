@@ -16,6 +16,14 @@ class Game
     winner_name || advantage_name || deuce || current_score
   end
 
+  def active?
+    !has_winner?
+  end
+
+  def won_by?(player_name)
+    has_winner? && player_name == leading_player_name
+  end
+
 private
 
   def players
@@ -75,7 +83,11 @@ private
   end
 
   def winner_name
-    "Game #{leading_player_name}" if any_player_has_4_points? && double_point_difference?
+    "Game #{leading_player_name}" if has_winner?
+  end
+
+  def has_winner?
+    any_player_has_4_points? && double_point_difference?
   end
 
   def advantage_name
