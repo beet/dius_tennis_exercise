@@ -22,7 +22,11 @@ class Match
   end
 
   def start_new_game
-    @games << Game.new(player_1_name, player_2_name)
+    @games << (tie_breaker? ? TieBreaker.new(player_1_name, player_2_name) : Game.new(player_1_name, player_2_name))
+  end
+
+  def tie_breaker?
+    player_wins.uniq == [6]
   end
 
   def game_scores
@@ -38,11 +42,11 @@ class Match
   end
 
   def has_winner?
-    match_point? || tie_breaker?
+    match_point? || tie_breaker_point?
   end
 
   def match_point?
-    max_wins >= 6 && wins_delta >= 2
+    (max_wins >= 6 && wins_delta >= 2)
   end
 
   def max_wins
@@ -65,12 +69,15 @@ class Match
     games.select { |game| game.won_by?(player_2_name)}.size
   end
 
-  # TODO: implement tie-break rules
-  def tie_breaker?
-    false
-  end
-
   def winning_player_name
     player_1_wins == max_wins ? player_1_name : player_2_name
+  end
+
+  def tie_breaker_point?
+    last_game.is_a?(TieBreaker) && !last_game.active?
+  end
+
+  def last_game
+    games.last
   end
 end

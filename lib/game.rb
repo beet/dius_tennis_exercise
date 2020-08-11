@@ -55,7 +55,7 @@ private
   end
 
   def any_player_has_4_points?
-    players.detect { |player| player >= 4}
+    players.select { |player| player.points >= 4}.any?
   end
 
   def highest_score
@@ -71,7 +71,7 @@ private
   end
 
   def three_points_scored_by_each_player?
-    players.collect { |player| player >= 3 }.uniq == [true]
+    players.collect { |player| player.points >= 3 }.uniq == [true]
   end
 
   def scores_equal?
